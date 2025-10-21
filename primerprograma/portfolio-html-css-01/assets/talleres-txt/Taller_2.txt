@@ -1,0 +1,89 @@
+Taller CSS
+1 - Estilizando elementos con clases CSS
+Estás trabajando en el desarrollo de una página web y necesitas aplicar estilos específicos a diferentes elementos usando clases CSS.
+Tu desafío es crear una clase llamada "texto-destacado" en el archivo HTML para un elemento <p>, y luego estilizar esa clase en el archivo CSS 
+para cambiar el color del texto. Usa tu creatividad para elegir colores que resalten el texto pero aún sean legibles y armoniosos con el diseño 
+general de la página.
+
+<!-- HTML -->
+<p class="texto-destacado">Este es un texto destacado.</p>
+
+/* CSS */
+.texto-destacado {
+  color: #e63946;
+  font-weight: bold;
+}
+
+2 - 
+Imagina que estás desarrollando un blog y necesitas resaltar los títulos de las publicaciones.
+Crea una clase CSS llamada "titulo-blog" y aplícala a elementos <h1> en tu archivo HTML. Luego, 
+personaliza esta clase en el archivo CSS para cambiar el color del texto y darle más énfasis.
+
+<!-- HTML -->
+<h1 class="titulo-blog">Cómo aplicar buenas prácticas en CSS</h1>
+
+/* CSS */
+.titulo-blog {
+  color: #1d3557;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+3 - 
+Estás trabajando en un sitio de noticias y necesitas aplicar un estilo diferente para las noticias urgentes. 
+Crea una clase CSS llamada "urgente" y aplícala a elementos <p> que contengan noticias urgentes. 
+En CSS, haz que el texto de estos párrafos sea rojo para llamar la atención del lector.
+
+<!-- HTML -->
+<p class="urgente">¡Última hora! Se reporta un sismo en la región central.</p>
+
+/* CSS */
+.urgente {
+  color: red;
+  font-weight: bold;
+}
+
+4 - 
+Estás trabajando en un proyecto de sitio web y has notado que el diseño está un poco desorganizado debido a los estilos predeterminados 
+aplicados por el navegador. Tu tarea es aplicar un "reset CSS" para eliminar estos estilos predeterminados. 
+Comienza creando un archivo CSS y utiliza el selector universal * para establecer el margen y el relleno de todos los elementos en 0. 
+Prueba el efecto de este cambio en el diseño de tu sitio.
+
+/* CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+5 - 
+Como profesional del front-end, necesitas entender cómo se aplican los estilos a los elementos de tu página. 
+Utiliza las herramientas de desarrollo (DevTools) del navegador para inspeccionar el modelo de caja de un elemento de tu sitio. 
+Presta atención a las propiedades margin, border, padding y content. Describe cómo estas propiedades afectan al elemento seleccionado.
+
+Al inspeccionar un elemento con DevTools, verás un diagrama que representa:
+
+Content (contenido)
+Es el área donde se muestra el texto, imagen u otro contenido. Su tamaño puede verse afectado por width y height.
+
+padding (relleno)
+Espacio interno entre el contenido y el borde. Aumenta el tamaño total del elemento sin superponer el contenido.
+
+Border (borde)
+Rodea el padding y el contenido. Su grosor se suma al tamaño total del elemento.
+
+Margin (margen)
+Espacio externo que separa el elemento de otros elementos. No afecta el tamaño del elemento, pero sí su posición.
+
+🧱 Ejemplo visual en DevTools:
+Si un elemento tiene:
+
+margin: 20px
+border: 2px solid
+padding: 10px
+width: 200px
+
+➡️ Su tamaño total será:
+200 + (10×2) + (2×2) + (20×2) = 264px de ancho
+
+Estas propiedades juntas definen cómo el elemento se ve, se separa y se comporta en el diseño.
