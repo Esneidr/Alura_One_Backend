@@ -1,63 +1,20 @@
 package com.aluracursos.sreenmatch.models;
 
-import java.time.Year;
+import com.aluracursos.screenmatch.calculations.Rating;
 
-public class Movie {
-    private String title;
-    private Year releaseDate;
-    private int durationInMinutes;
-    private boolean includedInPlan;
-    private double sumRating;
-    private int total;
+public class Movie extends Title implements Rating {
+    private String director;
 
-    public String getTitle() {
-        return title;
+    public String getDirector() {
+        return director;
     }
 
-    public Year getReleaseDate() {
-        return releaseDate;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
-    public int getDurationInMinutes() {
-        return durationInMinutes;
-    }
-
-    public boolean isIncludedInPlan() {
-        return includedInPlan;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setReleaseDate(Year releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public void setDurationInMinutes(int durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
-    }
-
-    public void setIncludedInPlan(boolean includedInPlan) {
-        this.includedInPlan = includedInPlan;
-    }
-
-    public void technicalInfo() {
-        System.out.printf("El nombre de la película es: %s%n", title);
-        System.out.printf("Fecha de lanzamiento: %d%n", releaseDate.getValue());
-        System.out.printf("Duración en minutos: %d min%n", durationInMinutes);
-    }
-
-    public void rating(double score) {
-        sumRating += score;
-        total++;
-    }
-
-    public double averageRating() {
-        return sumRating / total;
+    @Override
+    public int getRating() {
+        return (int) (averageRating() / 2);
     }
 }
