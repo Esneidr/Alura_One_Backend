@@ -2,13 +2,18 @@ package com.aluracursos.sreenmatch.models;
 
 import java.time.Year;
 
-public class Title {
+public class Title implements Comparable<Title> {
     private String title;
     private Year releaseDate;
     private int durationInMinutes;
     private boolean includedInPlan;
     private double sumRating;
     private int total;
+
+    public Title(String title, Year releaseDate) {
+        this.title = title;
+        this.releaseDate = releaseDate;
+    }
 
     public String getTitle() {
         return title;
@@ -59,5 +64,10 @@ public class Title {
 
     public double averageRating() {
         return sumRating / total;
+    }
+
+    @Override
+    public int compareTo(Title anotherTitle) {
+        return this.getTitle().compareTo(anotherTitle.getTitle());
     }
 }

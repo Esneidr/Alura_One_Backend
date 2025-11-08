@@ -1,3 +1,5 @@
+package com.aluracursos.main;
+
 import com.aluracursos.screenmatch.calculations.RecommendationFilter;
 import com.aluracursos.screenmatch.calculations.TimeCalculator;
 import com.aluracursos.sreenmatch.models.Episode;
@@ -5,19 +7,20 @@ import com.aluracursos.sreenmatch.models.Movie;
 import com.aluracursos.sreenmatch.models.Series;
 
 import java.time.Year;
+import java.util.ArrayList;
 
 public class ScreenMatch {
     public static void main(String[] args) {
-        Movie movie = new Movie();
-        Movie movie1 = new Movie();
-        Series serie = new Series();
+        var movie = new Movie("Encanto", Year.of(2021));
+        var movie1 = new Movie("Matrix", Year.of(1998));
+        var movie2 = new Movie("EL señor de los anillos", Year.of(2001));
+        var serie = new Series("La casa del dragón", Year.of(2022));
+
         TimeCalculator calculator = new TimeCalculator();
         RecommendationFilter filter = new RecommendationFilter();
         Episode episode = new Episode();
 
         // película
-        movie.setTitle("Encanto");
-        movie.setReleaseDate(Year.of(2021));
         movie.setDurationInMinutes(120);
         movie.setIncludedInPlan(true);
 
@@ -29,13 +32,9 @@ public class ScreenMatch {
         System.out.printf("Rating: %.2f%n", movie.averageRating());
 
         // película 2
-        movie1.setTitle("Matrix");
-        movie1.setReleaseDate(Year.of(1998));
         movie1.setDurationInMinutes(180);
 
         // serie
-        serie.setTitle("La casa del dragón");
-        serie.setReleaseDate(Year.of(2022));
         serie.setSeason(1);
         serie.setMinutesPerEpisode(50);
         serie.setEpisodesPerSeason(10);
@@ -56,5 +55,13 @@ public class ScreenMatch {
         episode.setSerie(serie);
         episode.setTotalViews(50);
         filter.filer(episode);
+
+        // película 3
+        movie2.setDurationInMinutes(180);
+
+        var movies = new ArrayList<Movie>();
+        movies.add(movie);
+        movies.add(movie1);
+        movies.add(movie2);
     }
 }

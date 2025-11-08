@@ -1,10 +1,15 @@
 package com.aluracursos.sreenmatch.models;
 
+import java.time.Year;
+
 public class Series extends Title {
     private int season;
     private int episodesPerSeason;
     private int minutesPerEpisode;
 
+    public Series(String name, Year releaseDate) {
+        super(name, releaseDate);
+    }
     @Override
     public int getDurationInMinutes() {
         return  season * episodesPerSeason * minutesPerEpisode;
@@ -32,5 +37,10 @@ public class Series extends Title {
 
     public void setMinutesPerEpisode(int minutesPerEpisode) {
         this.minutesPerEpisode = minutesPerEpisode;
+    }
+
+    @Override
+    public String toString() {
+        return "Serie: " + this.getTitle() + " (" + getReleaseDate() + ")";
     }
 }
