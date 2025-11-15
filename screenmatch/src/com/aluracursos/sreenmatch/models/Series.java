@@ -1,13 +1,11 @@
 package com.aluracursos.sreenmatch.models;
 
-import java.time.Year;
-
 public class Series extends Title {
     private int season;
     private int episodesPerSeason;
     private int minutesPerEpisode;
 
-    public Series(String name, Year releaseDate) {
+    public Series(String name, int releaseDate) {
         super(name, releaseDate);
     }
     @Override

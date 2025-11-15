@@ -1,0 +1,26 @@
+[
+  {
+    "Title": "Encanto",
+    "ReleaseDate": 2021,
+    "DurationInMinutes": 102,
+    "IncludedInPlan": false,
+    "SumRating": 0.0,
+    "Total": 0
+  },
+  {
+    "Title": "Matrix",
+    "ReleaseDate": 1993,
+    "DurationInMinutes": 60,
+    "IncludedInPlan": false,
+    "SumRating": 0.0,
+    "Total": 0
+  },
+  {
+    "Title": "Moana",
+    "ReleaseDate": 2016,
+    "DurationInMinutes": 107,
+    "IncludedInPlan": false,
+    "SumRating": 0.0,
+    "Total": 0
+  }
+]

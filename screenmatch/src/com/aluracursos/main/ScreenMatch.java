@@ -11,10 +11,10 @@ import java.util.ArrayList;
 
 public class ScreenMatch {
     public static void main(String[] args) {
-        var movie = new Movie("Encanto", Year.of(2021));
-        var movie1 = new Movie("Matrix", Year.of(1998));
-        var movie2 = new Movie("EL señor de los anillos", Year.of(2001));
-        var serie = new Series("La casa del dragón", Year.of(2022));
+        var movie = new Movie("Encanto", 2021);
+        var movie1 = new Movie("Matrix", 1998);
+        var movie2 = new Movie("EL señor de los anillos", 2001);
+        var serie = new Series("La casa del dragón", 2022);
 
         TimeCalculator calculator = new TimeCalculator();
         RecommendationFilter filter = new RecommendationFilter();

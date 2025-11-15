@@ -1,0 +1,1 @@
+Nombre = 'Moana', Fecha de lanzamiento = 2016', Duración (mns) = 107

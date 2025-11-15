@@ -8,7 +8,7 @@ public class Movie extends Title implements Rating {
 
     private String director;
 
-    public Movie(String name, Year releaseDate) {
+    public Movie(String name, int releaseDate) {
         super(name, releaseDate);
     }
 
