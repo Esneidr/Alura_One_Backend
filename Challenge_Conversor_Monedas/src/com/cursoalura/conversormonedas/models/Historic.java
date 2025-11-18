@@ -1,3 +1,5 @@
+package com.cursoalura.conversormonedas.models;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

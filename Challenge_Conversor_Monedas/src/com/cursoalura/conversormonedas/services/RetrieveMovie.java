@@ -1,3 +1,6 @@
+package com.cursoalura.conversormonedas.services;
+
+import com.cursoalura.conversormonedas.models.Converter;
 import com.google.gson.Gson;
 
 import java.net.URI;

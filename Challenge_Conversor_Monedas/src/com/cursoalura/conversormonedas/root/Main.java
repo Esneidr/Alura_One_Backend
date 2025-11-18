@@ -1,5 +1,13 @@
+package com.cursoalura.conversormonedas.root;
+
+import com.cursoalura.conversormonedas.models.Converter;
+import com.cursoalura.conversormonedas.models.Historic;
+import com.cursoalura.conversormonedas.services.RetrieveMovie;
+import com.cursoalura.conversormonedas.utils.TopMoneys;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -7,33 +15,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         RetrieveMovie retrieve = new RetrieveMovie();
         List<Historic> history = new ArrayList<>();
-
-        List<String> currencies = List.of(
-                "USD – Dólar estadounidense",
-                "EUR – Euro",
-                "JPY – Yen japonés",
-                "GBP – Libra esterlina",
-                "AUD – Dólar australiano",
-                "CAD – Dólar canadiense",
-                "CHF – Franco suizo",
-                "CNY – Yuan chino (Renminbi)",
-                "NZD – Dólar neozelandés",
-                "MXN – Peso mexicano",
-                "SEK – Corona sueca",
-                "NOK – Corona noruega",
-                "KRW – Won surcoreano",
-                "SGD – Dólar de Singapur",
-                "HKD – Dólar de Hong Kong",
-                "INR – Rupia india",
-                "BRL – Real brasileño",
-                "ZAR – Rand sudafricano",
-                "TRY – Lira turca",
-                "RUB – Rublo ruso"
-        );
-
-        System.out.println("********** GUIA DE MONEDAS (TOP 20) **********");
-        currencies.forEach(System.out::println);
-        System.out.println("**********************************************");
 
         int exit = 1;
         while (exit != 0) {
@@ -64,6 +45,14 @@ public class Main {
                 Converter converter = retrieve.converter(money);
 
                 if (converter.result().equals("success")) {
+                    Map<String, Double> topCurrencies = TopMoneys.top(converter.conversion_rates(), money);
+
+                    System.out.printf("Para la moneda base %s (actualizado el %s)%n", money, converter.time_last_update_utc()
+                            .replace(" +0000", ""));
+                    System.out.printf("********** Top 15 de monedas con mayor valor frente a %s **********%n", money);
+                    topCurrencies.forEach((code, value) -> System.out.printf("%s: %.4f$%n", code,value));
+                    System.out.println("***********************************************************");
+
                     System.out.printf("Ingrese la moneda a comparar con %s: ", money);
                     String money2 = scanner.nextLine();
 
