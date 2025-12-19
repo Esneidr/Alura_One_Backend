@@ -2,27 +2,24 @@ package com.cursoalura.conversormonedas.root;
 
 import com.cursoalura.conversormonedas.models.Converter;
 import com.cursoalura.conversormonedas.models.Historic;
-import com.cursoalura.conversormonedas.services.RetrieveMovie;
+import com.cursoalura.conversormonedas.services.RetrieveCurrency;
 import com.cursoalura.conversormonedas.utils.TopMoneys;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        RetrieveMovie retrieve = new RetrieveMovie();
+        RetrieveCurrency retrieve = new RetrieveCurrency();
         List<Historic> history = new ArrayList<>();
 
-        int exit = 1;
-        while (exit != 0) {
+        while (true) {
             try {
                 System.out.println("1. Realizar conversión");
                 System.out.println("2. Ver historial de conversiones");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
+
                 int option = scanner.nextInt();
                 scanner.nextLine();
 
@@ -40,7 +37,12 @@ public class Main {
                 if (option == 0) break;
 
                 System.out.print("Ingrese la moneda base (ej: USD): ");
-                String money = scanner.nextLine().trim();
+                String money = scanner.nextLine().trim().toUpperCase();
+
+                if (!money.matches("[A-Z]{3}")) {
+                    System.out.println("Código inválido. Debe ser de 3 letras (ej: USD).");
+                    continue;
+                }
 
                 Converter converter = retrieve.converter(money);
 
@@ -66,13 +68,14 @@ public class Main {
                         System.out.printf("%.2f %s = %.2f %s%n", amount, money, converted, money2);
                         history.add(new Historic(money, money2, amount, converted));
                     } else {
-                        System.out.printf("La moneda %s no existe.", money2);
+                        System.out.printf("La moneda %s no existe.%n", money2);
                     }
                 } else {
-                    System.out.printf("La moneda %s no existe.", money);
+                    System.out.printf("La moneda %s no existe.%n", money);
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Valor inválido: " + e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("Debe ingresar un número válido: ");
+                scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 scanner.nextLine();

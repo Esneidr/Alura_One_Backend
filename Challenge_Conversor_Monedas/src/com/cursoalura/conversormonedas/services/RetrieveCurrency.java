@@ -8,7 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class RetrieveMovie {
+public class RetrieveCurrency {
     public Converter converter(String code) {
         String ApiKey = "3545e1ab0e150c8fcce9308d";
 
