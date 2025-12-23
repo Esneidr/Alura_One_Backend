@@ -3,7 +3,6 @@ package com.aluracursos.screenmatch.models;
 import com.aluracursos.screenmatch.enums.Category;
 import jakarta.persistence.*;
 
-import javax.annotation.processing.Generated;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -12,7 +11,7 @@ import java.util.OptionalDouble;
 public class Serie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IdSerie;
+    private Long Id;
 
     @Column(unique = true)
     private String title;
@@ -25,7 +24,7 @@ public class Serie {
     private String poster;
     private String synopsis;
 
-    @Transient
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Episode> episodes;
 
     public Serie() {}
@@ -41,11 +40,11 @@ public class Serie {
     }
 
     public Long getIdSerie() {
-        return IdSerie;
+        return Id;
     }
 
-    public void setIdSerie(Long idSerie) {
-        IdSerie = idSerie;
+    public void setIdSerie(Long id) {
+        Id = id;
     }
 
     public String getTitle() {
@@ -104,6 +103,15 @@ public class Serie {
         this.synopsis = synopsis;
     }
 
+    public List<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<Episode> episodes) {
+        episodes.forEach(e -> e.setSerie(this));
+        this.episodes = episodes;
+    }
+
     @Override
     public String toString() {
         return
@@ -113,6 +121,7 @@ public class Serie {
                 ", totalSeasons=" + totalSeasons +
                 ", rating=" + rating +
                 ", poster='" + poster + '\'' +
-                ", synopsis='" + synopsis + '\'';
+                ", synopsis='" + synopsis + '\'' +
+                ", episodes='" + episodes + '\'';
     }
 }

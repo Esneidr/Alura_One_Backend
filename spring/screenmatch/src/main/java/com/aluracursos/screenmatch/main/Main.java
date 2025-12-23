@@ -5,7 +5,6 @@ import com.aluracursos.screenmatch.repository.SerieRepository;
 import com.aluracursos.screenmatch.services.ApiConsumer;
 import com.aluracursos.screenmatch.services.MapData;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,7 @@ public class Main {
     private MapData map = new MapData();
     private List<SeriesData> seriesData = new ArrayList<>();
     private SerieRepository repository;
+    private List<Serie> serieList;
 
     public Main(SerieRepository serieRepository) {
         this.repository = serieRepository;
@@ -26,9 +26,11 @@ public class Main {
         var option = -1;
         while (option != 0) {
             var menu = """
-                    1 - Buscar series
+                    1 - Buscar nuevas series
                     2 - Buscar episodios
                     3 - Ver series buscadas
+                    4 - Buscar serie guarda por titulo
+                    5 - Top 5 mejores series
                     
                     0 - Salir
                     """;
@@ -45,6 +47,12 @@ public class Main {
                     break;
                 case 3:
                     showSeries();
+                    break;
+                case 4:
+                    searchSerieTitle();
+                    break;
+                case 5:
+                    topFiveSeries();
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -65,16 +73,36 @@ public class Main {
     }
 
     private void searchEpisode() {
-        SeriesData data = getSeriesData();
-        List<SeasonInfo> seasons = new ArrayList<>();
+        showSeries();
+        System.out.println("Ingresa el nombre de la serie: ");
+        var nameSerie = scanner.nextLine();
 
-        for (int i = 1; i <= data.totalSeasons(); i++) {
-            var json = api.getData(URL_BASE + data.title().replace(" ", "+")
-                    + "&Season=" + i + API_KEY);
-            var seasonDetails = map.getData(json, SeasonInfo.class);
-            seasons.add(seasonDetails);
+        Optional<Serie> serie = serieList.stream()
+                .filter(s -> s.getTitle().toLowerCase().contains(nameSerie.toLowerCase()))
+                .findFirst();
+
+        if (serie.isPresent()) {
+            var successData = serie.get();
+
+            List<SeasonInfo> seasons = new ArrayList<>();
+
+            for (int i = 1; i <= successData.getTotalSeasons(); i++) {
+                var json = api.getData(URL_BASE + successData.getTitle().replace(" ", "+")
+                        + "&Season=" + i + API_KEY);
+                var seasonDetails = map.getData(json, SeasonInfo.class);
+                seasons.add(seasonDetails);
+            }
+
+            seasons.forEach(System.out::println);
+
+            List<Episode> episodeList = seasons.stream()
+                    .flatMap(d -> d.episodes().stream()
+                            .map(e -> new Episode(d.number(), e)))
+                    .collect(Collectors.toList());
+
+            successData.setEpisodes(episodeList);
+            repository.save(successData);
         }
-        seasons.forEach(System.out::println);
     }
 
     private void searchSerieWeb() {
@@ -86,10 +114,29 @@ public class Main {
     }
 
     private void showSeries() {
-        List<Serie> serieList = repository.findAll();
+         serieList = repository.findAll();
 
         serieList.stream()
                 .sorted(Comparator.comparing(Serie::getGenre))
                 .forEach(System.out::println);
+    }
+
+    private void searchSerieTitle() {
+        System.out.println("Ingresa el nombre de la serie a buscar: ");
+        var nameSerie = scanner.nextLine();
+
+        Optional<Serie> searchSerie = repository.findByTitleContainsIgnoreCase(nameSerie);
+
+        if(searchSerie.isPresent()) {
+            System.out.println("Se encontró la serie: " + searchSerie.get());
+        } else {
+            System.out.printf("Serie  %s no encontrada.%n", nameSerie);
+        }
+    }
+
+    private void topFiveSeries() {
+        List<Serie> topSeries = repository.findTop5ByOrderByRatingDesc();
+        topSeries.forEach(s -> System.out.printf("La serie %s tiene una evalaución: %.2f%n",
+                s.getTitle(), s.getRating()));
     }
 }
