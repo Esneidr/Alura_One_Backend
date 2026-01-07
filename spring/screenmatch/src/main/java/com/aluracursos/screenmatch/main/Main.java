@@ -1,5 +1,6 @@
 package com.aluracursos.screenmatch.main;
 
+import com.aluracursos.screenmatch.enums.Category;
 import com.aluracursos.screenmatch.models.*;
 import com.aluracursos.screenmatch.repository.SerieRepository;
 import com.aluracursos.screenmatch.services.ApiConsumer;
@@ -17,6 +18,7 @@ public class Main {
     private List<SeriesData> seriesData = new ArrayList<>();
     private SerieRepository repository;
     private List<Serie> serieList;
+    private Optional<Serie> searchSerie;
 
     public Main(SerieRepository serieRepository) {
         this.repository = serieRepository;
@@ -31,10 +33,14 @@ public class Main {
                     3 - Ver series buscadas
                     4 - Buscar serie guarda por titulo
                     5 - Top 5 mejores series
+                    6 - Buscar serie guarda por categoría
+                    7 - Filtar serie por temporada y rating
+                    8 - Buscar episodios por titulo
+                    9 - TOP 5 episodios por serie
                     
                     0 - Salir
                     """;
-            System.out.println(menu);
+            System.out.print(menu);
             option = scanner.nextInt();
             scanner.nextLine();
 
@@ -54,6 +60,18 @@ public class Main {
                 case 5:
                     topFiveSeries();
                     break;
+                case 6:
+                    searchSerieCategory();
+                    break;
+                case 7:
+                    searchSerieSeasonRating();
+                    break;
+                case 8:
+                    searchEpisodesName();
+                    break;
+                case 9:
+                    searchTop5Episodes();
+                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -64,7 +82,7 @@ public class Main {
     }
 
     private SeriesData getSeriesData() {
-        System.out.println("Busca una serie: ");
+        System.out.print("Busca una serie: ");
         var searchSerie = scanner.nextLine();
         var json = api.getData(URL_BASE + searchSerie.replace(" ", "+") + API_KEY);
         System.out.println(json);
@@ -74,7 +92,7 @@ public class Main {
 
     private void searchEpisode() {
         showSeries();
-        System.out.println("Ingresa el nombre de la serie: ");
+        System.out.print("Ingresa el nombre de la serie: ");
         var nameSerie = scanner.nextLine();
 
         Optional<Serie> serie = serieList.stream()
@@ -122,10 +140,10 @@ public class Main {
     }
 
     private void searchSerieTitle() {
-        System.out.println("Ingresa el nombre de la serie a buscar: ");
+        System.out.print("Ingresa el nombre de la serie a buscar: ");
         var nameSerie = scanner.nextLine();
 
-        Optional<Serie> searchSerie = repository.findByTitleContainsIgnoreCase(nameSerie);
+        searchSerie = repository.findByTitleContainsIgnoreCase(nameSerie);
 
         if(searchSerie.isPresent()) {
             System.out.println("Se encontró la serie: " + searchSerie.get());
@@ -139,4 +157,69 @@ public class Main {
         topSeries.forEach(s -> System.out.printf("La serie %s tiene una evalaución: %.2f%n",
                 s.getTitle(), s.getRating()));
     }
+
+    private void searchSerieCategory() {
+        System.out.print("Ingresa el género de la serie a buscar: ");
+        String genreInput = scanner.nextLine().trim();
+
+        try {
+            Category category = Category.fromSpanish(genreInput);
+
+            List<Serie> series = repository.findByGenre(category);
+            System.out.printf("Series del género %s:%n", genreInput);
+            series.forEach(System.out::println);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Género no válido. Intenta nuevamente.");
+        }
+    }
+
+    private void searchSerieSeasonRating() {
+        System.out.print("Buscar series con máximo cuántas temporadas: ");
+        int maxSeasons = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Con un rating mínimo de: ");
+        double minRating = scanner.nextDouble();
+        scanner.nextLine();
+
+        List<Serie> series = repository.seireSeansonsAndRating(maxSeasons, minRating);
+
+        System.out.println("\n***** Series filtradas *****");
+
+        if (series.isEmpty()) {
+            System.out.println("No se encontraron series con esos criterios.");
+            return;
+        }
+
+        series.forEach(serie ->
+                System.out.printf("La serie %s - rating %.2f%n",
+                        serie.getTitle(),
+                        serie.getRating())
+        );
+    }
+
+    private void searchEpisodesName() {
+        System.out.print("\nIngresa el nombre del episodioa buscar: ");
+        var nameEpisode = scanner.nextLine();
+
+            List<Episode> episodeList = repository.episodesByName(nameEpisode);
+            episodeList.forEach(e ->
+                    System.out.printf("Serie: %s - Temporada %d - Episodio %d - Evaluación %.1f%n",
+                            e.getSerie().getTitle(), e.getSeasonNumber(), e.getEpisodeNumber(), e.getRating())
+            );
+    }
+
+    private void searchTop5Episodes() {
+        searchSerieTitle();
+
+        if (searchSerie.isPresent()) {
+            Serie serie = searchSerie.get();
+            List<Episode> topEpisodes = repository.top5Episodes(serie);
+            topEpisodes.forEach(e ->
+                    System.out.printf("Serie: %s - Temporada %d - Episodio %s - Evaluación %.1f%n",
+                            e.getSerie().getTitle(), e.getSeasonNumber(), e.getTitle(), e.getRating())
+            );
+        }
+    }
+
 }
