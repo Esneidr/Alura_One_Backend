@@ -10,25 +10,30 @@ const fichaDescripcion = document.getElementById('ficha-descripcion');
 function cargarTemporadas() {
     getDatos(`/series/${serieId}/temporadas/todas`)
         .then(data => {
-            const temporadasUnicas = [...new Set(data.map(temporada => temporada.temporada))];
+            // obtener temporadas únicas según seasonNumber
+            const temporadasUnicas = [...new Set(data.map(temporada => temporada.seasonNumber))];
+
             listaTemporadas.innerHTML = ''; // Limpia las opciones existentes
 
+            // opción por defecto
             const optionDefault = document.createElement('option');
             optionDefault.value = '';
-            optionDefault.textContent = 'Seleccione la temporada'
-            listaTemporadas.appendChild(optionDefault); 
-           
-            temporadasUnicas.forEach(temporada => {
+            optionDefault.textContent = 'Seleccione la temporada';
+            listaTemporadas.appendChild(optionDefault);
+
+            // agregar temporadas individuales
+            temporadasUnicas.forEach(temp => {
                 const option = document.createElement('option');
-                option.value = temporada;
-                option.textContent = temporada;
+                option.value = temp;
+                option.textContent = `Temporada ${temp}`;
                 listaTemporadas.appendChild(option);
             });
 
+            // opción para ver todas juntas
             const optionTodos = document.createElement('option');
             optionTodos.value = 'todas';
-            optionTodos.textContent = 'Todas las temporadas'
-            listaTemporadas.appendChild(optionTodos); 
+            optionTodos.textContent = 'Todas las temporadas';
+            listaTemporadas.appendChild(optionTodos);
         })
         .catch(error => {
             console.error('Error al obtener temporadas:', error);
@@ -39,46 +44,48 @@ function cargarTemporadas() {
 function cargarEpisodios() {
     getDatos(`/series/${serieId}/temporadas/${listaTemporadas.value}`)
         .then(data => {
-            const temporadasUnicas = [...new Set(data.map(temporada => temporada.temporada))];
+            // Extrae temporadas únicas usando seasonNumber
+            const temporadasUnicas = [...new Set(data.map(ep => ep.seasonNumber))];
+
             fichaSerie.innerHTML = ''; 
-            temporadasUnicas.forEach(temporada => {
+
+            temporadasUnicas.forEach(temp => {
                 const ul = document.createElement('ul');
                 ul.className = 'episodios-lista';
 
-                const episodiosTemporadaAtual = data.filter(serie => serie.temporada === temporada);
+                // Filtra por seasonNumber
+                const episodiosTemporada = data.filter(ep => ep.seasonNumber === temp);
 
-                const listaHTML = episodiosTemporadaAtual.map(serie => `
-                    <li>
-                        ${serie.numeroEpisodio} - ${serie.titulo}
-                    </li>
+                const listaHTML = episodiosTemporada.map(ep => `
+                    <li>${ep.episodeNumber} - ${ep.title}</li>
                 `).join('');
+
                 ul.innerHTML = listaHTML;
                 
-                const paragrafo = document.createElement('p');
-                const linha = document.createElement('br');
-                paragrafo.textContent = `Temporada ${temporada}`;
-                fichaSerie.appendChild(paragrafo);
-                fichaSerie.appendChild(linha);
+                const tituloTemporada = document.createElement('p');
+                tituloTemporada.textContent = `Temporada ${temp}`;
+
+                fichaSerie.appendChild(tituloTemporada);
                 fichaSerie.appendChild(ul);
+                fichaSerie.appendChild(document.createElement('br'));
             });
         })
-        .catch(error => {
-            console.error('Error al obtener episodios:', error);
-        });
+        .catch(error => console.error('Error al obtener episodios:', error));
 }
+
 
 // Funcion para cargar informaciones de la serie
 function cargarInfoSerie() {
     getDatos(`/series/${serieId}`)
         .then(data => {
             fichaDescripcion.innerHTML = `
-                <img src="${data.poster}" alt="${data.titulo}" />
+                <img src="${data.poster}" alt="${data.title}" />
                 <div>
-                    <h2>${data.titulo}</h2>
+                    <h2>${data.title}</h2>
                     <div class="descricao-texto">
-                        <p><b>Média de evaluaciones:</b> ${data.evaluacion}</p>
-                        <p>${data.sinopsis}</p>
-                        <p><b>Actores:</b> ${data.actores}</p>
+                        <p><b>Média de evaluaciones:</b> ${data.rating}</p>
+                        <p>${data.synopsis}</p>
+                        <p><b>Actores:</b> ${data.actors}</p>
                     </div>
                 </div>
             `;
@@ -87,6 +94,7 @@ function cargarInfoSerie() {
             console.error('Error al obtener informaciones de la serie:', error);
         });
 }
+
 
 // Adiciona escuchador de evento para el elemento select
 listaTemporadas.addEventListener('change', cargarEpisodios);

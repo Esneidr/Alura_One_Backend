@@ -1,0 +1,56 @@
+# Java Console App + Gutendex API + PostgreSQL
+
+Aplicación de consola desarrollada en **Java / Spring Boot** que consulta libros y autores usando la API pública **Gutendex**.  
+Los resultados pueden almacenarse en una base de datos **PostgreSQL** mediante **JPA/Hibernate**.
+
+--- 
+
+## Funcionalidad del menú
+1 - Buscar un libro (API Gutendex)
+2 - Consultar libros por autor
+3 - Consultar libros por idioma
+4 - Listar autores vivos en un año específico
+0 - Salir
+
+---
+
+## Descripción rápida
+
+### Buscar un libro  
+Consulta la API con un texto ingresado por el usuario y muestra coincidencias encontradas.
+
+### Consultar libros por autor  
+Busca autores por nombre (búsqueda parcial / LIKE) y lista sus libros registrados.
+
+### Consultar libros por idioma  
+Filtra libros usando código de idioma **ISO 639-1**  
+Ejemplos: `en` (Inglés), `es` (Español), `pt` (Portugués)
+
+### Autores vivos en un año  
+Lista autores cuyo:
+- Año de nacimiento ≤ año consultado
+- Año de muerte ≥ año consultado **o null (autor vivo)**
+
+---
+
+## 🛠 Tecnologías utilizadas
+
+- **Java 17+**
+- **Spring Boot**
+- **JPA / Hibernate**
+- **PostgreSQL**
+- **Maven**
+- API externa: **Gutendex**  
+  `https://gutendex.com/books/`
+
+---
+
+## 🧪 Ejecución del proyecto
+
+1. Configurar base de datos PostgreSQL  
+   Definir credenciales en `application.properties`
+
+2. Ejecutar aplicación:
+```bash
+mvn spring-boot:run
+

@@ -39,11 +39,11 @@ public class Serie {
         this.synopsis = seriesData.synopsis();
     }
 
-    public Long getIdSerie() {
+    public Long getId() {
         return Id;
     }
 
-    public void setIdSerie(Long id) {
+    public void setId(Long id) {
         Id = id;
     }
 

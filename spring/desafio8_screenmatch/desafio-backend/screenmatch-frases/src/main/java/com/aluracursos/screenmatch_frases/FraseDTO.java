@@ -1,4 +1,9 @@
 package com.aluracursos.screenmatch_frases;
 
-public class FraseDTO {
+public record FraseDTO(
+        String titulo,
+        String frase,
+        String personaje,
+        String poster
+) {
 }

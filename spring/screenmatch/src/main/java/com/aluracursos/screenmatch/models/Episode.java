@@ -41,11 +41,11 @@ public class Episode {
         }
     }
 
-    public Long getIdEpisode() {
+    public Long getId() {
         return Id;
     }
 
-    public void setIdEpisode(Long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
