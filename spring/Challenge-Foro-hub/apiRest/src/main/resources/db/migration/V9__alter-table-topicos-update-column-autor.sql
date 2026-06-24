@@ -1,7 +1,20 @@
-create table topicos(
-    id bigint generated always as identity primary key,
-    autor varchar(100) not null,
-    titulo varchar(100) not null unique,
-    mensaje varchar(2000) not null unique,
-    curso varchar(20) not null
-);
+-- 1️⃣ Agregar la columna permitiendo NULL
+ALTER TABLE topicos
+ADD COLUMN autor_id BIGINT;
+
+UPDATE topicos t
+SET autor_id = u.id
+FROM usuarios u
+WHERE t.autor = u.nombre_completo;
+
+ALTER TABLE topicos
+ALTER COLUMN autor_id SET NOT NULL;
+
+ALTER TABLE topicos
+ADD CONSTRAINT fk_topicos_autor
+FOREIGN KEY (autor_id)
+REFERENCES usuarios(id)
+ON DELETE RESTRICT;
+
+ALTER TABLE topicos
+DROP COLUMN autor;

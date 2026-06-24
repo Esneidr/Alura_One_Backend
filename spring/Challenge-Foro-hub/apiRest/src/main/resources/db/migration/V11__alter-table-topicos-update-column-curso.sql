@@ -1,20 +1,20 @@
--- 1️⃣ Agregar la columna permitiendo NULL
 ALTER TABLE topicos
-ADD COLUMN autor_id BIGINT;
+ADD COLUMN curso_id BIGINT;
 
-UPDATE topicos t
-SET autor_id = u.id
-FROM usuarios u
-WHERE t.autor = u.nombre;
+UPDATE topicos
+SET curso_id = 1;
 
 ALTER TABLE topicos
-ALTER COLUMN autor_id SET NOT NULL;
+ALTER COLUMN curso_id SET NOT NULL;
 
 ALTER TABLE topicos
-ADD CONSTRAINT fk_topicos_autor
-FOREIGN KEY (autor_id)
-REFERENCES usuarios(id)
+ADD CONSTRAINT fk_topicos_curso
+FOREIGN KEY (curso_id)
+REFERENCES cursos(id)
 ON DELETE RESTRICT;
 
 ALTER TABLE topicos
-DROP COLUMN autor;
+DROP COLUMN curso;
+
+ALTER TABLE topicos
+ADD COLUMN fecha_actualizacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;

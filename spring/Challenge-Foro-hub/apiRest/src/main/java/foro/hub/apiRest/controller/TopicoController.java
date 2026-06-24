@@ -78,9 +78,21 @@ public class TopicoController {
         );
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<TopicoDetallesDTO>> activarTopico(@PathVariable Long id) {
+        var topico = service.cambiarActivo(id, true);
+
+        return ResponseEntity.ok(
+                ResponseBuilder.success(
+                        "Se activó el tópico.",
+                        new TopicoDetallesDTO(topico)
+                )
+        );
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<TopicoDetallesDTO>> inactivarTopico(@PathVariable Long id) {
-        var topico = service.inactivarTopico(id);
+        var topico = service.cambiarActivo(id, false);
 
         return ResponseEntity.ok(
                 ResponseBuilder.success(

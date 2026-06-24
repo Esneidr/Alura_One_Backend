@@ -51,10 +51,15 @@ public class TopicoService {
     }
 
     @Transactional
-    public Topico inactivarTopico(Long id) {
+    public Topico cambiarActivo(Long id, boolean activar) {
         var topico = obtenerTopicoPorId(id);
 
-        topico.inactivar();
+        if (activar) {
+            topico.activar();
+        } else {
+            topico.inactivar();
+        }
+
         return topico;
     }
 

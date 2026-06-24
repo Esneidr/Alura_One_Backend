@@ -1,13 +1,14 @@
 package foro.hub.apiRest.domain.DTO;
 
-import foro.hub.apiRest.domain.ENUM.Curso;
+import foro.hub.apiRest.domain.model.Curso;
+import foro.hub.apiRest.domain.model.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record TopicoDTO(
         @NotBlank (message = "El autor no puede estar vacío")
-        String autor,
+        Usuario autor,
 
         @NotBlank (message = "El título no puede estar vacío")
         @Size(min = 5, max = 100, message = "El título debe tener entre 5 y 100 caracteres")

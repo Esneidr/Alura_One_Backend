@@ -1,7 +1,8 @@
-create table topicos(
+create table cursos(
     id bigint generated always as identity primary key,
-    autor varchar(100) not null,
-    titulo varchar(100) not null unique,
-    mensaje varchar(2000) not null unique,
-    curso varchar(20) not null
+    nombre varchar(100) not null unique,
+    categoria varchar(50) not null
 );
+
+INSERT INTO cursos (nombre, categoria)
+VALUES ('Curso General', 'ARCHITECTURE');

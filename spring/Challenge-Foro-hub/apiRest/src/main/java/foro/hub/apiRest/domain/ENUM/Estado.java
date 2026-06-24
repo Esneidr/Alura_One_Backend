@@ -1,5 +1,7 @@
 package foro.hub.apiRest.domain.ENUM;
 
-public enum Estados {
-    
+public enum Estado {
+    ABIERTO,
+    CERRADO,
+    RESUELTO
 }

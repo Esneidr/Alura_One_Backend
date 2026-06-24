@@ -1,5 +1,8 @@
 package foro.hub.apiRest.domain.model;
 
+//thiago password -> t06c
+//Isable -> i28vl
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,11 +26,14 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "nombre_completo")
     private String nombreCompleto;
+
     private String email;
     private String password;
     private Boolean activo;
+
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
